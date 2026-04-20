@@ -19,7 +19,7 @@ architecture Behavioral of CtrlUnit is
 begin
     process(opcode)
     begin
-        -- Valores por defecto para evitar "latches" (circuitos de memoria no deseados)
+        -- Valores por defecto
         RegSrc    <= "00"; ALUOp <= "000"; RegWrite  <= '0';
         Write7Seg <= '0';  WriteLEDs <= '0'; PCInc <= '0';
         Beq       <= '0';  JiJr <= "00";
