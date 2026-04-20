@@ -4,28 +4,38 @@
 -- 
 -- Create Date:    16:29:16 01/24/2012 
 -- Design Name: 
--- Module Name:    Program Counter 
+-- Module Name:    Top - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
--- Description: Implementation of the Program Counter
+-- Description: Implementation of a generic frequency divider
+--              with no clock skew
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity ProgCounter is
+entity ClkDiv is
+  generic (
+    Fout : natural);
   port (
-    PCIn  : in  STD_LOGIC_VECTOR (7 downto 0);
-	 Clk   : in  STD_LOGIC;
-	 Cen   : in  STD_LOGIC;
-	 Rst   : in  STD_LOGIC;
-    PCOut : out STD_LOGIC_VECTOR (7 downto 0));
-end ProgCounter;
+    Clkin  : in  STD_LOGIC;
+    Rst    : in  STD_LOGIC;
+    Clkout : out STD_LOGIC);
+end ClkDiv;
 
-architecture Behavioral of ProgCounter is
+architecture Behavioral of ClkDiv is
 
 begin
-
+  
 end Behavioral;
+
+
+
+
+
+
+
+
+
