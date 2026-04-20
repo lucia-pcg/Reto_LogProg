@@ -1,0 +1,66 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity CtrlUnit is
+    port(
+        opcode     : in  STD_LOGIC_VECTOR(3 downto 0); -- Entrada de 4 bits
+        RegSrc     : out STD_LOGIC_VECTOR(1 downto 0); -- Selecciona dato a escribir en registro
+        ALUOp      : out STD_LOGIC_VECTOR(2 downto 0); -- Operación de la ALU
+        RegWrite   : out STD_LOGIC;                    -- Habilita escritura en registros
+        Write7Seg  : out STD_LOGIC;                    -- Habilita Display 7 seg
+        WriteLEDs  : out STD_LOGIC;                    -- Habilita LEDs
+        PCInc      : out STD_LOGIC;                    -- Salto relativo (BEQ)
+        Beq        : out STD_LOGIC;                    -- Indicador de instrucción BEQ
+        JiJr       : out STD_LOGIC_VECTOR(1 downto 0)  -- Selecciona origen del PC (JI/JR)
+    );
+end entity;
+
+architecture Behavioral of CtrlUnit is
+begin
+    process(opcode)
+    begin
+        -- Valores por defecto para evitar "latches" (circuitos de memoria no deseados)
+        RegSrc    <= "00"; ALUOp <= "000"; RegWrite  <= '0';
+        Write7Seg <= '0';  WriteLEDs <= '0'; PCInc <= '0';
+        Beq       <= '0';  JiJr <= "00";
+
+        case opcode is
+            when "0000" => -- ADD: rd = rs + rt
+                RegWrite <= '1'; ALUOp <= "000"; RegSrc <= "00";
+            when "0001" => -- SUB: rd = rs - rt
+                RegWrite <= '1'; ALUOp <= "001"; RegSrc <= "00";
+            when "0010" => -- AND
+                RegWrite <= '1'; ALUOp <= "010"; RegSrc <= "00";
+            when "0011" => -- OR
+                RegWrite <= '1'; ALUOp <= "011"; RegSrc <= "00";
+            when "0100" => -- XOR
+                RegWrite <= '1'; ALUOp <= "100"; RegSrc <= "00";
+            when "0101" => -- NOT
+                RegWrite <= '1'; ALUOp <= "101"; RegSrc <= "00";
+            when "0110" => -- SHL (Shift Left)
+                RegWrite <= '1'; ALUOp <= "110"; RegSrc <= "00";
+            when "0111" => -- SHR (Shift Right)
+                RegWrite <= '1'; ALUOp <= "111"; RegSrc <= "00";
+            
+            when "1000" => -- LD: rd = inmediato
+                RegWrite <= '1'; RegSrc <= "01";
+            when "1001" => -- SPC: rd = PC
+                RegWrite <= '1'; RegSrc <= "10";
+            
+            when "1010" => -- BEQ: si rs == rt, PC = PC + 1 + imm
+                Beq <= '1'; ALUOp <= "001"; -- La ALU resta para comparar
+            
+            when "1011" => -- JI: PC = inmediato
+                JiJr <= "01";
+            when "1100" => -- JR: PC = rs
+                JiJr <= "10";
+            
+            when "1101" => -- W7SEG
+                Write7Seg <= '1';
+            when "1110" => -- WLEDS
+                WriteLEDs <= '1';
+                
+            when others => null; -- Opcodes no usados
+        end case;
+    end process;
+end Behavioral;
