@@ -31,7 +31,28 @@ end Registers;
 
 architecture Behavioral of Registers is
 
+-- Creamos nuestro grupo de 8 registros
+    type RAM is array (0 to 7) of STD_LOGIC_VECTOR(7 downto 0);
+    signal Regs : RAM := (others => (others => '0'));
 begin
-  
-end Behavioral;
 
+    -- LECTURA Combinacional (Asíncrona)
+    -- En cuanto cambias el número de SelA o SelB, el valor de OutA o OutB cambia
+    OutA <= Regs(conv_integer(SelA));
+    OutB <= Regs(conv_integer(SelB));
+
+    -- ESCRITURA (Guardar información)
+    process(Clk, Rst)
+    begin
+        if Rst = '1' then
+            Regs <= (others => (others => '0'));
+        elsif rising_edge(Clk) then
+            if Cen = '1' and WE = '1' then
+                -- Guardamos el dato en el registro elegido por SelWR
+                Regs(conv_integer(SelWR)) <= Data;
+            end if;
+        end if;
+    end process;
+
+
+end Behavioral;
