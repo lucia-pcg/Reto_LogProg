@@ -36,13 +36,20 @@ architecture Behavioral of Reg8 is
 
 begin
 
+    -- Proceso secuencial para capturar el dato
+    process(Clk, Rst)
+    begin
+        if Rst = '1' then
+            OutD <= (others => '0');
+        elsif rising_edge(Clk) then
+            -- Condiciones para actualizar el registro:
+            -- 1. Cen: El pulso del divisor de reloj (habilitador del sistema)
+            -- 2. En: La señal de habilitación específica (WriteLEDs o Write7Seg)
+            if Cen = '1' and En = '1' then
+                OutD <= Inrs;
+            end if;
+        end if;
+    end process;
+	 
 end Behavioral;
-
-
-
-
-
-
-
-
 
