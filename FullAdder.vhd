@@ -32,6 +32,6 @@ end FullAdder;
 architecture Behavioral of FullAdder is
 
 begin
-
+	S <= InA + InB;
 end Behavioral;
 
