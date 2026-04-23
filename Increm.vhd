@@ -33,6 +33,13 @@ end Increm;
 architecture Behavioral of Increm is
 
 begin
-
+	process(InA, InB, Sel)
+	begin 
+		if Sel = '0' then
+			OutM <= InA;
+		else
+		   OutM <= InB
+		end if;
+	end process;
 end Behavioral;
 
